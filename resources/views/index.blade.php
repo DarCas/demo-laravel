@@ -4,7 +4,13 @@
 
 @section('headerAppend')
 
-    <a href="/create" class="btn btn-outline-primary ms-auto">
+    <a href="/contacts" class="btn btn-outline-secondary ms-auto">
+        <i class="bi bi-envelope-fill"></i>
+
+        Contattaci
+    </a>
+
+    <a href="/create" class="btn btn-outline-primary ms-1">
         <i class="bi bi-plus-lg"></i>
 
         Aggiungi prodotto

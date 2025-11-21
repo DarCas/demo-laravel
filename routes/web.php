@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::controller(\App\Http\Controllers\ContactsController::class)
+    ->group(function () {
+        Route::get('/contacts', 'index');
+    });
+
 Route::controller(\App\Http\Controllers\DefaultController::class)
     ->group(function () {
         /**
