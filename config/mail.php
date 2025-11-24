@@ -114,6 +114,7 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+
     'to' => [
         'address' => 'no-reply@app-laravel.loc',
         'name' => env('APP_NAME'),

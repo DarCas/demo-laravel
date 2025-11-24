@@ -51,6 +51,7 @@ class ContactsController extends Controller
                     name: config('mail.to.name'),
                 )
             );
+
             /** @var SentMessage|null $responde */
             $responde = $mail->send(
                 new \App\Mail\Contacts([

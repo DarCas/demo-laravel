@@ -23,7 +23,7 @@ class Sendmail extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         // La funzioen $this->ask() permette di chiedere all'utente di inserire un valore
         // $var = $this->ask()
