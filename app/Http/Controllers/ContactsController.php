@@ -10,4 +10,11 @@ class ContactsController extends Controller
     {
         return view('contacts');
     }
+
+    public function send(Request $request)
+    {
+        // Validazione dati
+
+        // Invio email
+    }
 }
