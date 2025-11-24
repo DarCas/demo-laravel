@@ -13,8 +13,5 @@ class ContactsController extends Controller
 
     public function send(Request $request)
     {
-        // Validazione dati
-
-        // Invio email
     }
 }
