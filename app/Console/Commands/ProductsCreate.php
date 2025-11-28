@@ -31,13 +31,12 @@ class ProductsCreate extends Command
         $price = $this->ask('Inserisci il prezzo del prodotto:');
         $qty = $this->ask('Inserisci la quantità del prodotto:');
 
-        $validator = \Illuminate\Support\Facades\Validator::make(
-            [
-                'name' => $name,
-                'description' => $description,
-                'price' => $price,
-                'qty' => $qty,
-            ], [
+        $validator = \Illuminate\Support\Facades\Validator::make([
+            'name' => $name,
+            'description' => $description,
+            'price' => $price,
+            'qty' => $qty,
+        ], [
             'name' => [
                 'required',
                 'max:150',
