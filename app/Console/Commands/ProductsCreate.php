@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Product;
 use Illuminate\Console\Command;
 use Illuminate\Support\MessageBag;
 
@@ -67,6 +68,19 @@ class ProductsCreate extends Command
             return Command::FAILURE;
         }
 
-        // TODO: Inserire i dati nel database
+        try {
+            $product = new Product();
+            $product->name = $validator->getValue('name');
+            $product->description = $validator->getValue('description');
+            $product->price = $validator->getValue('price');
+            $product->qty = $validator->getValue('qty');
+            $product->save();
+
+            $this->call('app:products-single', ['id' => $product->id]);
+
+            return Command::SUCCESS;
+        } catch (\Throwable $th) {
+            $this->fail($th->getMessage());
+        }
     }
 }
