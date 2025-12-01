@@ -15,7 +15,7 @@ class ProductsUpdate extends Command implements PromptsForMissingInput
      * @var string
      */
     protected $signature = 'app:products-update
-                            {id : ID del prodotto da visualizzare}';
+                            {id : ID del prodotto da modificare}';
 
     /**
      * The console command description.

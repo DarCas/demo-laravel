@@ -2,30 +2,32 @@
 
 namespace App\Console\Commands;
 
+use App\Trait\ImageFunction;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class ProductsStatus extends Command implements PromptsForMissingInput
+class ProductsDelete extends Command
 {
+    use ImageFunction;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:products-status
-                            {id : ID del prodotto da modificare}';
+    protected $signature = 'app:products-delete
+                            {id : ID del prodotto da cancellare}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Cambia lo stato di un prodotto';
+    protected $description = 'Cancella un prodotto';
 
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $id = $this->argument('id');
 
@@ -46,18 +48,19 @@ class ProductsStatus extends Command implements PromptsForMissingInput
             $this->fail("Il prodotto con ID «{$id}» non esiste.");
         }
 
-        $stato = $this->choice('Seleziona lo stato del prodotto', ['Attivo', 'Nascosto']);
+        if ($this->confirm("Sei sicuro di voler cancellare il prodotto?")) {
+            try {
+                $this->rmImage($product->id);
+                $product->delete();
 
-        $product->active = ($stato === 'Attivo');
-        $product->save();
+                $this->info('Prodotto cancellato con successo.');
+            } catch (\Throwable $th) {
+                $this->fail($th->getMessage());
+            }
+        } else {
+            $this->info('Operazione annullata.');
+        }
 
-        $this->call('app:products-single', ['id' => $product->id]);
-    }
-
-    protected function promptForMissingArgumentsUsing(): array
-    {
-        return [
-            'id' => "Qual è l'ID del prodotto da visualizzare?",
-        ];
+        return Command::SUCCESS;
     }
 }
