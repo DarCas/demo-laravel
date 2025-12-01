@@ -4,39 +4,55 @@ namespace App\Console\Commands;
 
 use App\Models\Product;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\MessageBag;
 
-class ProductsCreate extends Command
+class ProductsUpdate extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:products-create';
+    protected $signature = 'app:products-update
+                            {id : ID del prodotto da visualizzare}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Crea un nuovo prodotto';
+    protected $description = 'Modifica un prodotto esistente';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $name = $this->ask('Inserisci il nome del prodotto:');
-        $description = $this->ask('Inserisci la descrizione del prodotto:');
-        $price = $this->ask('Inserisci il prezzo del prodotto:');
-        $qty = $this->ask('Inserisci la quantità del prodotto:');
+        $id = $this->argument('id');
+
+        /**
+         * Verificare che l'ID sia un numero intero
+         */
+        if (!is_numeric($id)) {
+            $this->fail("L'ID del prodotto deve essere un numero intero.");
+        }
+
+        /**
+         * Seleziono il prodotto dal database
+         * @var \App\Models\Product|null $product
+         */
+        $product = \App\Models\Product::find($id);
+
+        if (is_null($product)) {
+            $this->fail("Il prodotto con ID «{$id}» non esiste.");
+        }
 
         $validator = \Illuminate\Support\Facades\Validator::make([
-            'name' => $name,
-            'description' => $description,
-            'price' => $price,
-            'qty' => $qty,
+            'name' => $this->ask('Inserisci il nome del prodotto:', $product->name),
+            'description' => $this->ask('Inserisci la descrizione del prodotto:', $product->description),
+            'price' => $this->ask('Inserisci il prezzo del prodotto:', $product->price),
+            'qty' => $this->ask('Inserisci la quantità del prodotto:', $product->qty),
         ], [
             'name' => [
                 'required',
@@ -69,14 +85,13 @@ class ProductsCreate extends Command
         }
 
         try {
-            $product = new Product();
             $product->name = $validator->getValue('name');
             $product->description = $validator->getValue('description');
             $product->price = $validator->getValue('price');
             $product->qty = $validator->getValue('qty');
             $product->save();
 
-            $this->info('Prodotto creato con successo.');
+            $this->info('Prodotto aggiornato con successo.');
             $this->newLine();
 
             $this->call('app:products-single', ['id' => $product->id]);
