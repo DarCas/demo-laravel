@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::controller(\App\Http\Controllers\BackupsController::class)
+    ->group(function () {
+        Route::get('/backups', 'index');
+
+        Route::get('/backups/{filename}', 'download')
+            ->where('filename', '.*');
+    });
+
 Route::controller(\App\Http\Controllers\ContactsController::class)
     ->group(function () {
         Route::get('/contacts', 'index');
