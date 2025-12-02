@@ -4,7 +4,13 @@
 
 @section('headerAppend')
 
-    <a href="/contacts" class="btn btn-outline-secondary ms-auto">
+    <a href="/backups" class="btn btn-outline-secondary ms-auto">
+        <i class="bi bi-cloud-arrow-down-fill"></i>
+
+        Backups
+    </a>
+
+    <a href="/contacts" class="btn btn-outline-secondary ms-1">
         <i class="bi bi-envelope-fill"></i>
 
         Contattaci
